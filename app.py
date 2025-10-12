@@ -11,41 +11,46 @@ st.set_page_config(
 # --- 2. HEADER ---
 st.header("Scientific Visualization", divider="gray")
 
-# --- 3. DATA SIMULATION (Define arts_df for the chart) ---
-# Replace this section with your actual data loading for arts_df
+# --- Data Simulation ---
+# **IMPORTANT:** Replace this block with your actual data loading for arts_df
 np.random.seed(42) 
 data = {'Gender': np.random.choice(['Female', 'Male', 'Other'], size=100, p=[0.6, 0.35, 0.05])}
 arts_df = pd.DataFrame(data)
-# ----------------------------------------------------------------
+# -----------------------
 
-st.title("📊 Gender Distribution in Arts Faculty (Plotly)")
-st.markdown("This interactive visualization uses **Plotly Express**.")
+st.set_page_config(
+    page_title="Gender Distribution Bar Chart (Plotly)"
+)
 
-# --- 4. CONVERTED CODE TO PLOTLY EXPRESS ---
+st.title("📊 Gender Distribution in Arts Faculty")
+st.markdown("This interactive bar chart is generated using **Plotly Express**.")
 
-# Calculate the gender counts and convert the Series to a DataFrame for Plotly
+# 1. Calculate the gender counts and convert the Series to a DataFrame for Plotly
 gender_counts_df = arts_df['Gender'].value_counts().reset_index()
-gender_counts_df.columns = ['Gender', 'Count'] # Rename columns for clarity
+# Rename columns to 'Gender' and 'Count' for clear mapping in Plotly
+gender_counts_df.columns = ['Gender', 'Count'] 
 
-# Create the Plotly figure using Plotly Express
+# 2. Create the Plotly figure using px.bar()
 fig = px.bar(
     gender_counts_df,
     x='Gender', 
     y='Count',
     title='Distribution of Gender in Arts Faculty',
-    color='Gender', # Use gender for color mapping
-    color_discrete_sequence=['skyblue', 'lightcoral', 'lightgreen'] # Set colors
+    color='Gender', # Color the bars based on Gender
+    color_discrete_sequence=['skyblue', 'lightcoral', 'lightgreen'],
+    template='plotly_white' # Optional: Use a clean white background template
 )
 
-# Update layout for better aesthetics (optional)
+# 3. Update layout for clarity
 fig.update_layout(
     xaxis_title='Gender',
     yaxis_title='Count',
-    xaxis={'categoryorder': 'total descending'} # Order bars by count
+    xaxis={'categoryorder': 'array', 'categoryarray': gender_counts_df['Gender']} # Ensure order matches the data
 )
 
-# Display the Plotly figure in Streamlit using st.plotly_chart()
+# 4. Display the Plotly figure in Streamlit
 st.plotly_chart(fig, use_container_width=True)
 
-st.subheader("Count Details")
-st.dataframe(gender_counts_df)
+st.subheader("Raw Data Counts")
+st.dataframe(gender_counts_df, hide_index=True)
+
