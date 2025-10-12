@@ -1,10 +1,43 @@
 import streamlit as st
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
 
 st.set_page_config(
     page_title="Scientific Visualization"
 )
 
 st.header("Scientific Visualization", divider="gray")
+
+# --- Data Simulation (as arts_df is not defined) ---
+# You'll need to define 'arts_df' or load your actual data here.
+# Below is a simulation for demonstration purposes:
+data = {'Gender': ['Female', 'Male', 'Female', 'Female', 'Male', 'Female', 'Male', 'Female']}
+arts_df = pd.DataFrame(data)
+# ---------------------------------------------------
+
+st.set_page_config(
+    page_title="Gender Distribution Visualization"
+)
+
+st.title("Gender Distribution in Arts Faculty")
+
+# Calculate the gender counts
+gender_counts = arts_df['Gender'].value_counts()
+
+# Create the matplotlib figure
+fig, ax = plt.subplots(figsize=(8, 6))
+
+# Plot the bar chart on the axis 'ax'
+ax.bar(gender_counts.index, gender_counts.values, color=['skyblue', 'lightcoral'])
+
+# Set titles and labels for the axis 'ax'
+ax.set_title('Distribution of Gender in Arts Faculty')
+ax.set_xlabel('Gender')
+ax.set_ylabel('Count')
+
+# Display the matplotlib figure in Streamlit
+st.pyplot(fig)
 
 # --- Data Simulation ---
 # Since 'arts_df' isn't defined, we create a sample DataFrame for the example.
