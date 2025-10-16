@@ -141,14 +141,19 @@ if all(col in arts_df.columns for col in [
     aspect_counts = best_aspects.value_counts().reset_index()
     aspect_counts.columns = ['Aspect', 'Count']
 
+    # Let user choose how many top aspects to display
+    top_n = st.slider("🔢 Select number of top aspects to display", 5, 20, 10)
+    top_aspects = aspect_counts.head(top_n)
+
     # Create interactive horizontal bar chart
     fig_aspects = px.bar(
+        top_aspects,
         x='Count',
         y='Aspect',
         orientation='h',
         color='Count',
         color_continuous_scale='Viridis',
-        title=f"Top Most Frequently Mentioned Best Aspects of the Program"
+        title=f"Top {top_n} Most Frequently Mentioned Best Aspects of the Program"
     )
 
     # Decorate layout
@@ -164,7 +169,6 @@ if all(col in arts_df.columns for col in [
     st.plotly_chart(fig_aspects, use_container_width=True)
 else:
     st.warning("⚠️ One or both of the aspect columns (Q7 or Q8) are missing in your dataset.")
-
 
 
 # --- 8. DISTRIBUTION OF ARTS PROGRAMS ---
