@@ -144,7 +144,6 @@ if all(col in arts_df.columns for col in [
 
     # Create interactive horizontal bar chart
     fig_aspects = px.bar(
-        top_aspects,
         x='Count',
         y='Aspect',
         orientation='h',
