@@ -23,7 +23,7 @@ try:
 
     if 'Gender' in arts_df.columns:
         gender_counts = arts_df['Gender'].value_counts().reset_index()
-        gender_counts.columns = ['Count']
+        gender_counts.columns = ['Gender','Count']
 
         fig = px.bar(
             gender_counts,
