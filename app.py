@@ -23,7 +23,7 @@ try:
 
     if 'Gender' in arts_df.columns:
         gender_counts = arts_df['Gender'].value_counts().reset_index()
-        gender_counts.columns = ['Gender', 'Count']
+        gender_counts.columns = ['Count']
 
         fig = px.bar(
             gender_counts,
@@ -146,9 +146,6 @@ if all(col in arts_df.columns for col in [
     aspect_counts = best_aspects.value_counts().reset_index()
     aspect_counts.columns = ['Aspect', 'Count']
 
-    # Let user choose how many top aspects to display
-    top_n = st.slider("🔢 Select number of top aspects to display", 5, 20, 10)
-    top_aspects = aspect_counts.head(top_n)
 
     # Create interactive horizontal bar chart
     fig_aspects = px.bar(
