@@ -56,12 +56,6 @@ if 'Gender' in arts_df.columns:
     gender_counts = arts_df['Gender'].value_counts().reset_index()
     gender_counts.columns = ['Gender', 'Count']
 
-    # Add emoji decoration for label clarity
-    gender_counts['Gender'] = gender_counts['Gender'].replace({
-        'Male': '👨 Male',
-        'Female': '👩 Female'
-    })
-
     # Create Plotly Express pie chart
     fig_pie = px.pie(
         gender_counts,
