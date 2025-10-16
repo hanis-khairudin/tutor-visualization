@@ -31,7 +31,7 @@ try:
             y='Count',
             color='Gender',
             color_discrete_sequence=['skyblue', 'lightcoral'],
-            title='Distribution of Gender in Arts Faculty'
+            title='Distribution of Gender in Arts Faculty',
             hover_data={'Gender': False}
         )
         fig.update_layout(
