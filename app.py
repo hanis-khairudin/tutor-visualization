@@ -126,3 +126,151 @@ if all(col in arts_df.columns for col in ['Gender', 'Did you ever attend a Coach
     st.plotly_chart(fig_grouped, use_container_width=True)
 else:
     st.warning("⚠️ Columns 'Gender' or 'Did you ever attend a Coaching center?' not found in your dataset.")
+
+
+# --- 7. TOP BEST ASPECTS OF THE PROGRAM ---
+st.subheader("🏅 Top Most Appreciated Aspects of the Program")
+
+# Check if both columns exist
+if all(col in arts_df.columns for col in [
+    'Q7. In your opinion,the best aspect of the program is',
+    'Q8. In your opinion,the next best aspect of the program is'
+]):
+    # Combine both columns and clean
+    best_aspects = pd.concat([
+        arts_df['Q7. In your opinion,the best aspect of the program is'],
+        arts_df['Q8. In your opinion,the next best aspect of the program is']
+    ]).dropna()
+
+    # Count and sort
+    aspect_counts = best_aspects.value_counts().reset_index()
+    aspect_counts.columns = ['Aspect', 'Count']
+
+    # Let user choose how many top aspects to display
+    top_n = st.slider("🔢 Select number of top aspects to display", 5, 20, 10)
+    top_aspects = aspect_counts.head(top_n)
+
+    # Create interactive horizontal bar chart
+    fig_aspects = px.bar(
+        top_aspects,
+        x='Count',
+        y='Aspect',
+        orientation='h',
+        color='Count',
+        color_continuous_scale='Viridis',
+        title=f"Top {top_n} Most Frequently Mentioned Best Aspects of the Program"
+    )
+
+    # Decorate layout
+    fig_aspects.update_layout(
+        xaxis_title='Number of Mentions',
+        yaxis_title='Aspect',
+        title_x=0.5,
+        template='plotly_white',
+        coloraxis_showscale=False
+    )
+
+    # Display chart
+    st.plotly_chart(fig_aspects, use_container_width=True)
+else:
+    st.warning("⚠️ One or both of the aspect columns (Q7 or Q8) are missing in your dataset.")
+
+
+# --- 8. DISTRIBUTION OF ARTS PROGRAMS ---
+st.subheader("🎭 Distribution of Arts Programs")
+
+# Check if the column exists
+if 'Arts Program' in arts_df.columns:
+    # Count each Arts Program
+    program_counts = arts_df['Arts Program'].value_counts().reset_index()
+    program_counts.columns = ['Arts Program', 'Count']
+
+    # Create interactive horizontal bar chart
+    fig_programs = px.bar(
+        program_counts,
+        x='Count',
+        y='Arts Program',
+        color='Arts Program',
+        orientation='h',
+        color_discrete_sequence=px.colors.sequential.Viridis,
+        title='Distribution of Arts Programs'
+    )
+
+    # Customize layout
+    fig_programs.update_layout(
+        xaxis_title='Number of Students',
+        yaxis_title='Arts Program',
+        title_x=0.5,
+        template='plotly_white',
+        showlegend=False
+    )
+
+    # Display chart
+    st.plotly_chart(fig_programs, use_container_width=True)
+else:
+    st.warning("⚠️ Column 'Arts Program' not found in your dataset.")
+
+
+# --- 9. STUDENT PERCEPTION ON EDUCATION QUALITY IMPROVEMENT ---
+st.subheader("📈 Student Perception on Education Quality Improvement")
+
+# Check if the column exists
+if 'Do you feel that the quality of education improved at EU over the last year?' in arts_df.columns:
+    # Count the occurrences of each response
+    education_quality_counts = arts_df['Do you feel that the quality of education improved at EU over the last year?'] \
+        .value_counts().reset_index()
+    education_quality_counts.columns = ['Education Quality Improved', 'Count']
+
+    # Create interactive bar chart
+    fig_edu_quality = px.bar(
+        education_quality_counts,
+        x='Education Quality Improved',
+        y='Count',
+        color='Education Quality Improved',
+        color_discrete_sequence=px.colors.sequential.Viridis,
+        title='Student Perception on Education Quality Improvement (Arts Faculty)'
+    )
+
+    # Customize chart layout
+    fig_edu_quality.update_layout(
+        xaxis_title='Did Education Quality Improve?',
+        yaxis_title='Number of Students',
+        title_x=0.5,
+        template='plotly_white',
+        showlegend=False
+    )
+
+    # Display in Streamlit
+    st.plotly_chart(fig_edu_quality, use_container_width=True)
+else:
+    st.warning("⚠️ Column 'Do you feel that the quality of education improved at EU over the last year?' not found in your dataset.")
+
+
+# --- 10. RELATIONSHIP BETWEEN S.S.C AND H.S.C GPA ---
+st.subheader("📊 Relationship Between S.S.C (GPA) and H.S.C (GPA)")
+
+# Check if both columns exist
+if all(col in arts_df.columns for col in ['S.S.C (GPA)', 'H.S.C (GPA)']):
+    # Create interactive scatter plot
+    fig_scatter = px.scatter(
+        arts_df,
+        x='S.S.C (GPA)',
+        y='H.S.C (GPA)',
+        color_discrete_sequence=px.colors.sequential.Viridis,
+        title='S.S.C (GPA) vs H.S.C (GPA) in Arts Faculty',
+        opacity=0.7,
+        trendline='ols'  # optional: adds regression line
+    )
+
+    # Customize layout
+    fig_scatter.update_layout(
+        xaxis_title='S.S.C (GPA)',
+        yaxis_title='H.S.C (GPA)',
+        title_x=0.5,
+        template='plotly_white'
+    )
+
+    # Display chart
+    st.plotly_chart(fig_scatter, use_container_width=True)
+else:
+    st.warning("⚠️ Columns 'S.S.C (GPA)' or 'H.S.C (GPA)' not found in your dataset.")
