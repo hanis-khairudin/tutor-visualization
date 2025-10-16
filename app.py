@@ -47,6 +47,12 @@ try:
 except Exception as e:
     st.error(f"⚠️ Unable to load dataset. Please check your GitHub raw URL.\n\nError: {e}")
 
+    st.write("""
+    This bar chart shows distribution of gender in arts program.
+    It shows that 67 students from art faculty is female, while only 21 students are male. 
+    From the chart, female students are exceed the number of male students.
+    """)
+
 # --- 5. GENDER DISTRIBUTION (PIE CHART) ---
 st.subheader("🥧 Gender Representation Overview")
 
