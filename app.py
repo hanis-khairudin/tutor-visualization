@@ -243,3 +243,77 @@ if all(col in arts_df.columns for col in required_cols):
 
 else:
     st.error("The DataFrame 'arts_df' is missing the required columns (Q7 or Q8). Please check your data loading.")
+
+
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
+# --- Sample Data Creation (Replace with your actual data loading/processing) ---
+# NOTE: You'll need to load 'arts_df' in your actual Streamlit app.
+# This section is just for demonstration purposes so the code runs.
+try:
+    # Dummy Data for Demonstration
+    data = {
+        'Arts Program': [
+            'Visual Arts', 'Music', 'Theatre', 'Visual Arts', 'Music', 
+            'Dance', 'Visual Arts', 'Theatre', 'Music', 'Dance', 
+            'Visual Arts', 'Film', 'Music', 'Visual Arts', 'Film'
+        ]
+    }
+    arts_df = pd.DataFrame(data)
+
+except Exception as e:
+    st.error(f"Error creating dummy data: {e}. Please ensure 'arts_df' is loaded.")
+    arts_df = pd.DataFrame() 
+
+# --- Streamlit Application ---
+
+st.set_page_config(layout="wide", page_title="Arts Program Distribution")
+
+st.title("Distribution of Arts Programs 🎨")
+st.markdown("---")
+
+# --- Data Processing Logic ---
+
+if 'Arts Program' in arts_df.columns:
+    
+    # 1. Count the occurrences of each Arts Program
+    program_counts = arts_df['Arts Program'].value_counts().reset_index()
+    program_counts.columns = ['Arts Program', 'Count'] 
+
+    # --- Visualization (Plotly Express) ---
+
+    st.subheader("Count of Students per Arts Program")
+
+    # Create an interactive horizontal bar chart using Plotly Express
+    fig = px.bar(
+        program_counts,
+        x='Count',
+        y='Arts Program',
+        orientation='h', # Horizontal bar chart
+        title='Distribution of Arts Programs',
+        labels={'Count': 'Number of Students', 'Arts Program': 'Arts Program'},
+        color='Arts Program', # Color by program
+        color_discrete_sequence=px.colors.qualitative.Vivid
+    )
+    
+    # Customize the layout
+    fig.update_layout(
+        yaxis={'categoryorder': 'total ascending'}, # Order bars from smallest to largest count
+        xaxis_title='Number of Students',
+        yaxis_title='Arts Program',
+        showlegend=False, # Hide the legend as colors match the Y-axis
+        hovermode="y unified"
+    )
+    
+    # Display the interactive plot in Streamlit
+    st.plotly_chart(fig, use_container_width=True)
+
+    # --- Data Table ---
+    st.markdown("---")
+    st.subheader("Program Counts Data")
+    st.dataframe(program_counts)
+
+else:
+    st.error("The DataFrame 'arts_df' is missing the 'Arts Program' column. Please check your data loading.")
