@@ -408,13 +408,12 @@ else:
 
 # --- Sample Data Creation (Replace with your actual data loading/processing) ---
 # NOTE: You'll need to load 'arts_df' in your actual Streamlit app.
-# This section is just for demonstration purposes so the code runs.
 try:
     # Dummy Data for Demonstration
     data = {
-        'S.S.C (GPA)': [4.5, 4.8, 3.9, 5.0, 4.2, 4.7, 4.0, 4.9, 3.5, 4.6],
-        'H.S.C (GPA)': [4.2, 4.6, 3.5, 4.9, 4.0, 4.5, 3.8, 4.7, 3.3, 4.4],
-        'Arts Program': ['Music', 'Visual Arts', 'Theatre', 'Visual Arts', 'Dance', 'Music', 'Theatre', 'Visual Arts', 'Dance', 'Film']
+        'S.S.C (GPA)': [4.5, 4.8, 3.9, 5.0, 4.2, 4.7, 4.0, 4.9, 3.5, 4.6, 3.0, 5.0, 4.1],
+        'H.S.C (GPA)': [4.2, 4.6, 3.5, 4.9, 4.0, 4.5, 3.8, 4.7, 3.3, 4.4, 3.1, 4.8, 4.0],
+        'Arts Program': ['Music', 'Visual Arts', 'Theatre', 'Visual Arts', 'Dance', 'Music', 'Theatre', 'Visual Arts', 'Dance', 'Film', 'Music', 'Visual Arts', 'Film']
     }
     arts_df = pd.DataFrame(data)
 
@@ -424,9 +423,9 @@ except Exception as e:
 
 # --- Streamlit Application ---
 
-st.set_page_config(layout="wide", page_title="GPA Correlation Analysis")
+st.set_page_config(layout="wide", page_title="GPA Correlation Analysis (Plotly Express)")
 
-st.title("GPA Correlation: S.S.C vs H.S.C Scores 📈")
+st.title("S.S.C (GPA) vs H.S.C (GPA) Correlation 📊")
 st.markdown("---")
 
 # Define the required column names
@@ -437,7 +436,7 @@ HSC_COL = 'H.S.C (GPA)'
 
 if SSC_COL in arts_df.columns and HSC_COL in arts_df.columns:
     
-    st.subheader(f"{SSC_COL} vs {HSC_COL} in Arts Faculty")
+    st.subheader("Interactive Scatter Plot for Academic Performance")
 
     # Create an interactive scatter plot using Plotly Express
     fig = px.scatter(
@@ -446,9 +445,39 @@ if SSC_COL in arts_df.columns and HSC_COL in arts_df.columns:
         y=HSC_COL,
         title='S.S.C (GPA) vs H.S.C (GPA) in Arts Faculty',
         labels={SSC_COL: SSC_COL, HSC_COL: HSC_COL},
-        color='Arts Program', # Optional: Add color coding based on another column
-        hover_data=[SSC_COL, HSC_COL] # Show GPA values on hover
+        color='Arts Program', # Use 'Arts Program' to differentiate points
+        hover_data=['Arts Program'] # Show the program when hovering
     )
     
     # Customize the layout
-    fig.update_layout
+    fig.update_layout(
+        xaxis_title=SSC_COL,
+        yaxis_title=HSC_COL,
+        hovermode="closest"
+    )
+
+    # Add a diagonal line to indicate perfect correlation (y=x)
+    max_gpa = max(arts_df[SSC_COL].max(), arts_df[HSC_COL].max())
+    min_gpa = min(arts_df[SSC_COL].min(), arts_df[HSC_COL].min())
+    
+    fig.add_shape(
+        type='line',
+        x0=min_gpa, y0=min_gpa,
+        x1=max_gpa, y1=max_gpa,
+        line=dict(color='Red', width=1, dash='dash'),
+        name='Perfect Correlation'
+    )
+    
+    # Display the interactive plot in Streamlit
+    st.plotly_chart(fig, use_container_width=True)
+
+    # --- Insight ---
+    st.markdown("""
+    ### Analysis Notes
+    * **Points near the red dashed line** indicate consistent GPA performance between S.S.C. and H.S.C.
+    * **Points significantly above the line** suggest an improvement in GPA from S.S.C. to H.S.C.
+    * **Points significantly below the line** suggest a drop in GPA from S.S.C. to H.S.C.
+    """)
+
+else:
+    st.error(f"The DataFrame 'arts_df' is missing one or both required columns: '{SSC_COL}' or '{HSC_COL}'. Please check your data loading.")
