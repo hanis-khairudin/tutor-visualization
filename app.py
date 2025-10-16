@@ -64,7 +64,6 @@ if 'Gender' in arts_df.columns:
         color='Gender',
         color_discrete_sequence=['skyblue', 'lightcoral'],
         title='🎯 Distribution of Gender in Arts Faculty',
-        hover_data={'Gender': False},
         hole=0.3  # donut-style for modern look
     )
 
@@ -100,7 +99,6 @@ if all(col in arts_df.columns for col in ['Gender', 'Did you ever attend a Coach
         barmode='group',
         color_discrete_sequence=px.colors.sequential.Viridis,
         title='Coaching Center Attendance by Gender (Arts Faculty)',
-        hover_data={'Gender': False}
     )
 
     # Decorate and format
