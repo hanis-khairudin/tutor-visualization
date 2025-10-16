@@ -65,8 +65,8 @@ if 'Gender' in arts_df.columns:
     # Create Plotly Express pie chart
     fig_pie = px.pie(
         gender_counts,
+        names='Gender',
         values='Count',
-        color='Gender',
         color_discrete_sequence=['skyblue', 'lightcoral'],
         title='🎯 Distribution of Gender in Arts Faculty',
         hole=0.3  # donut-style for modern look
