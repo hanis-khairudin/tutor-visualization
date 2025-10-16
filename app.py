@@ -196,7 +196,7 @@ if 'Arts Program' in arts_df.columns:
         y='Arts Program',
         color='Arts Program',
         orientation='h',
-        color_discrete_sequence=px.colors.sequential.Viridis,
+        color_discrete_sequence=px.colors.sequential.Turbo,
         title='Distribution of Arts Programs'
     )
 
