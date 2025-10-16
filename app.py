@@ -238,7 +238,7 @@ if 'Do you feel that the quality of education improved at EU over the last year?
         x='Education Quality Improved',
         y='Count',
         color='Education Quality Improved',
-        color_discrete_sequence=px.colors.sequential.Viridis,
+        color_discrete_sequence=px.colors.sequential.Inferno,
         title='Student Perception on Education Quality Improvement (Arts Faculty)'
     )
 
