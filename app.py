@@ -8,6 +8,7 @@ st.set_page_config(page_title="🧠🔬 Scientific Visualization")
 
 st.header("🧠 Scientific Visualization 🔬", divider="gray")
 st.write("Tutorial Scientific Visualization JIE42403 📊💡")
+st.write("Dataset 'Student Survey' by Razib Mustafiz from Kaggle")
 
 # --- 3. LOAD DATA FROM GITHUB ---
 # ⚠️ Replace this link with your actual raw GitHub CSV URL
