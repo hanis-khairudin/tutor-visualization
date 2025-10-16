@@ -148,7 +148,7 @@ if all(col in arts_df.columns for col in [
         orientation='h',
         color='Count',
         color_continuous_scale='Viridis',
-        title=f"Top {top_n} Most Frequently Mentioned Best Aspects of the Program"
+        title=f"Top Most Frequently Mentioned Best Aspects of the Program"
     )
 
     # Decorate layout
