@@ -129,52 +129,48 @@ else:
     st.warning("⚠️ Columns 'Gender' or 'Did you ever attend a Coaching center?' not found in your dataset.")
 
 
-# --- 7. TOP BEST ASPECTS OF THE PROGRAM ---
-st.subheader("🏅 Top Most Appreciated Aspects of the Program")
+import streamlit as st
+import pandas as pd
+import plotly.express as px
 
-# Check if both columns exist
-if all(col in arts_df.columns for col in [
-    'Q7. In your opinion,the best aspect of the program is',
-    'Q8. In your opinion,the next best aspect of the program is'
-]):
-    # Combine both columns and clean
-    best_aspects = pd.concat([
-        arts_df['Q7. In your opinion,the best aspect of the program is'],
-        arts_df['Q8. In your opinion,the next best aspect of the program is']
-    ]).dropna()
+# --- SECTION TITLE ---
+st.markdown("### 🏅 Top Most Appreciated Aspects of the Program")
 
-    # Count and sort
-    aspect_counts = best_aspects.value_counts().reset_index()
-    aspect_counts.columns = ['Aspect', 'Count']
+# Combine responses from Q7 and Q8
+best_aspects = pd.concat([
+    arts_df['Q7. In your opinion,the best aspect of the program is'],
+    arts_df['Q8. In your opinion,the next best aspect of the program is']
+]).dropna()
 
-    # Let user choose how many top aspects to display
-    top_n = st.slider("🔢 Select number of top aspects to display", 5, 20, 10)
-    top_aspects = aspect_counts.head(top_n)
+# Count occurrences
+aspect_counts = best_aspects.value_counts().reset_index()
+aspect_counts.columns = ['Aspect', 'Count']
 
-    # Create interactive horizontal bar chart
-    fig_aspects = px.bar(
-        top_aspects,
-        x='Count',
-        y='Aspect',
-        orientation='h',
-        color='Count',
-        color_continuous_scale='Viridis',
-        title=f"Top {top_n} Most Frequently Mentioned Best Aspects of the Program"
-    )
+# Select top 10 aspects (fixed, no slider)
+top_n = 10
+top_aspects = aspect_counts.head(top_n)
 
-    # Decorate layout
-    fig_aspects.update_layout(
-        xaxis_title='Number of Mentions',
-        yaxis_title='Aspect',
-        title_x=0.5,
-        template='plotly_white',
-        coloraxis_showscale=False
-    )
+# Create bar chart with Plotly Express
+fig = px.bar(
+    top_aspects,
+    x='Count',
+    y='Aspect',
+    orientation='h',
+    color='Aspect',
+    color_discrete_sequence=px.colors.qualitative.Vivid,
+    title=f"Top {top_n} Most Appreciated Aspects of the Program"
+)
 
-    # Display chart
-    st.plotly_chart(fig_aspects, use_container_width=True)
-else:
-    st.warning("⚠️ One or both of the aspect columns (Q7 or Q8) are missing in your dataset.")
+fig.update_layout(showlegend=False)
+
+# Show chart
+st.plotly_chart(fig, use_container_width=True)
+
+st.write("""
+This bar chart shows the most frequently mentioned positive aspects of the Arts program.
+It summarizes student feedback on what they value most, such as teaching quality or learning environment.
+The results help identify the strongest areas of the program that contribute to student satisfaction.
+""")
 
 
 # --- 8. DISTRIBUTION OF ARTS PROGRAMS ---
