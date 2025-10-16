@@ -272,7 +272,7 @@ if all(col in arts_df.columns for col in ['S.S.C (GPA)', 'H.S.C (GPA)']):
         arts_df,
         x='S.S.C (GPA)',
         y='H.S.C (GPA)',
-        color_discrete_sequence=px.colors.sequential.Vivid,
+        color_discrete_sequence=px.colors.sequential.Turbo,
         title='S.S.C (GPA) vs H.S.C (GPA) in Arts Faculty',
         opacity=0.7,
         trendline='ols'  # optional: adds regression line
