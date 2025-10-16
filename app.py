@@ -78,7 +78,7 @@ if 'Gender' in arts_df.columns:
         textinfo='label+percent',
         textfont_size=14,
         pull=[0.05 if g == gender_counts['Gender'].max() else 0 for g in gender_counts['Gender']],
-        hovertemplate="<b>%{label}</b><br>Count: %{value}<br>Percentage: %{percent}"
+        hovertemplate="Count: %{value}<br>Percentage: %{percent}"
     )
 
     fig_pie.update_layout(
