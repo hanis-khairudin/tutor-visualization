@@ -108,35 +108,45 @@ st.subheader("Raw Data Counts")
 st.dataframe(gender_counts_df, hide_index=True)
 
 
-# --- Mock Data Setup (Replace with your actual data loading/processing) ---
-# We mock a DataFrame with 'Gender' and 'Coaching Center' columns.
-data = {
-    'Gender': ['Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Other', 'Male', 'Female'] * 20,
-    'Did you ever attend a Coaching center?': ['Yes', 'No', 'No', 'Yes', 'Yes', 'No', 'Yes', 'No', 'Yes'] * 20
-}
-arts_df = pd.DataFrame(data)
+# --- MOCK DATA SETUP (Replace with your actual data loading) ---
+# Create a mock arts_df for demonstration purposes
+np.random.seed(42) # for reproducibility
+n_students = 200
+arts_df = pd.DataFrame({
+    'Gender': np.random.choice(['Female', 'Male', 'Non-Binary'], size=n_students, p=[0.55, 0.40, 0.05]),
+    'Did you ever attend a Coaching center?': np.random.choice(['Yes', 'No'], size=n_students, p=[0.6, 0.4])
+})
+# -----------------------------------------------------------------
 
-# --- Streamlit and Plotly Chart ---
 
-# 1. Plotly Express automatically calculates the count when using 'Gender' for x
-# and 'Did you ever attend a Coaching center?' for color (hue).
+st.title('Coaching Center Attendance Analysis 📊')
+st.subheader('Coaching Center Attendance by Gender (Arts Faculty)')
+
+# 1. Create the Plotly Express Grouped Bar Chart
+# px.histogram() automatically calculates the counts (like sns.countplot)
 fig = px.histogram(
     arts_df,
     x='Gender',
     color='Did you ever attend a Coaching center?', # This acts as the 'hue' for grouping
-    barmode='group',                            # Stacks the bars side-by-side
-    title='Coaching Center Attendance by Gender (Arts Faculty)',
-    # Optional: Customize the colors using a built-in Plotly color scheme
-    color_discrete_sequence=px.colors.qualitative.Vivid 
+    barmode='group',                            # Displays bars side-by-side
+    
+    # Customize the colors and labels (similar to Matplotlib's 'palette')
+    color_discrete_map={'Yes': 'darkgreen', 'No': 'firebrick'}, 
+    labels={'Gender': 'Student Gender', 'count': 'Number of Students'} 
 )
 
-# 2. Update Layout and Axes Titles for clarity
+# 2. Update Layout for a professional look and clearer titles
 fig.update_layout(
-    xaxis_title="Gender",
-    yaxis_title="Number of Students", # The y-axis is the count/frequency
-    legend_title="Attended Coaching Center?"
+    xaxis_title='Gender',
+    yaxis_title='Number of Students',
+    legend_title='Attended Coaching Center',
+    title_x=0.5 # Center the chart title
 )
+
+# Optional: Add text labels on top of the bars
+fig.update_traces(texttemplate='%{y}', textposition='outside')
+fig.update_layout(uniformtext_minsize=8, uniformtext_mode='hide')
+
 
 # 3. Display the Plotly chart in Streamlit
-st.title('Student Attendance Analysis 📊')
 st.plotly_chart(fig, use_container_width=True)
