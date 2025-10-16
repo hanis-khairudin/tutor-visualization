@@ -122,7 +122,7 @@ if all(col in arts_df.columns for col in ['Gender', 'Did you ever attend a Coach
     # Add emoji to legend labels for fun clarity
     fig_grouped.for_each_trace(
         lambda t: t.update(
-            name='✅ Yes' if 'Yes' in t.name else '❌ No',
+            name='Yes' if 'Yes' in t.name else 'No',
             legendgroup=t.name,
         )
     )
@@ -272,7 +272,7 @@ if all(col in arts_df.columns for col in ['S.S.C (GPA)', 'H.S.C (GPA)']):
         arts_df,
         x='S.S.C (GPA)',
         y='H.S.C (GPA)',
-        color_discrete_sequence=px.colors.sequential.Viridis,
+        color_discrete_sequence=px.colors.sequential.Vivid,
         title='S.S.C (GPA) vs H.S.C (GPA) in Arts Faculty',
         opacity=0.7,
         trendline='ols'  # optional: adds regression line
