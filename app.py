@@ -5,16 +5,12 @@ import numpy as np
 
 # --- 1. SET PAGE CONFIGURATION ---
 st.set_page_config(
-    page_title="Scientific Visualization"
+    page_title="🧠🔬 Scientific Visualization"
 )
 
 # --- 2. HEADER ---
-st.header("Scientific Visualization", divider="gray")
-
-import streamlit as st
-import plotly.express as px  # Import Plotly Express
-import pandas as pd 
-import numpy as np 
+st.header("🧠 Scientific Visualization 🔬", divider="gray")
+st.write("Explore how **data** transforms into **insightful visuals** that tell powerful stories 📊💡")
 
 # --- Data Simulation ---
 # **IMPORTANT:** Replace this block with your actual data loading for arts_df
