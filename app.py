@@ -7,7 +7,7 @@ import plotly.express as px
 st.set_page_config(page_title="🧠🔬 Scientific Visualization")
 
 st.header("🧠 Scientific Visualization 🔬", divider="gray")
-st.write("Explore how **data** transforms into **insightful visuals** that tell powerful stories 📊💡")
+st.write("Tutorial Scientific Visualization JIE42403 📊💡")
 
 # --- 3. LOAD DATA FROM GITHUB ---
 # ⚠️ Replace this link with your actual raw GitHub CSV URL
@@ -15,7 +15,6 @@ url = "https://raw.githubusercontent.com/hanis-khairudin/tutor-visualization/ref
 
 try:
     arts_df = pd.read_csv(url)
-    st.success("✅ Dataset loaded successfully from GitHub!")
     st.dataframe(arts_df.head())
 
     # --- 4. GENDER DISTRIBUTION VISUALIZATION ---
