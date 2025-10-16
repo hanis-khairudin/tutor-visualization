@@ -24,10 +24,10 @@ arts_df = pd.DataFrame(data)
 # -----------------------
 
 st.set_page_config(
-    page_title="Gender Distribution Pie Chart (Plotly)"
+    page_title="Gender Distribution Pie Chart"
 )
 
-st.title("🥧 Gender Distribution Pie Chart (Plotly)")
+st.title("🥧 Gender Distribution Pie Chart")
 st.markdown("This interactive visualization uses **Plotly Express**.")
 
 # 1. Calculate the gender counts and prepare data for Plotly
@@ -72,7 +72,7 @@ arts_df = pd.DataFrame(data)
 # -----------------------
 
 st.set_page_config(
-    page_title="Gender Distribution Bar Chart (Plotly)"
+    page_title="Gender Distribution Bar Chart"
 )
 
 st.title("📊 Gender Distribution in Arts Faculty")
@@ -107,3 +107,36 @@ st.plotly_chart(fig, use_container_width=True)
 st.subheader("Raw Data Counts")
 st.dataframe(gender_counts_df, hide_index=True)
 
+
+# --- Mock Data Setup (Replace with your actual data loading/processing) ---
+# We mock a DataFrame with 'Gender' and 'Coaching Center' columns.
+data = {
+    'Gender': ['Male', 'Female', 'Male', 'Female', 'Male', 'Female', 'Other', 'Male', 'Female'] * 20,
+    'Did you ever attend a Coaching center?': ['Yes', 'No', 'No', 'Yes', 'Yes', 'No', 'Yes', 'No', 'Yes'] * 20
+}
+arts_df = pd.DataFrame(data)
+
+# --- Streamlit and Plotly Chart ---
+
+# 1. Plotly Express automatically calculates the count when using 'Gender' for x
+# and 'Did you ever attend a Coaching center?' for color (hue).
+fig = px.histogram(
+    arts_df,
+    x='Gender',
+    color='Did you ever attend a Coaching center?', # This acts as the 'hue' for grouping
+    barmode='group',                            # Stacks the bars side-by-side
+    title='Coaching Center Attendance by Gender (Arts Faculty)',
+    # Optional: Customize the colors using a built-in Plotly color scheme
+    color_discrete_sequence=px.colors.qualitative.Vivid 
+)
+
+# 2. Update Layout and Axes Titles for clarity
+fig.update_layout(
+    xaxis_title="Gender",
+    yaxis_title="Number of Students", # The y-axis is the count/frequency
+    legend_title="Attended Coaching Center?"
+)
+
+# 3. Display the Plotly chart in Streamlit
+st.title('Student Attendance Analysis 📊')
+st.plotly_chart(fig, use_container_width=True)
