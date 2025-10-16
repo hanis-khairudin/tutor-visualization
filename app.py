@@ -77,7 +77,7 @@ if 'Gender' in arts_df.columns:
     fig_pie.update_traces(
         textinfo='label+percent',
         textfont_size=14,
-        hovertemplate="Count: %{value}<br>Percentage: %{percent}"
+        hovertemplate="Count: %{value}<extra></extra>"
     )
 
     fig_pie.update_layout(
