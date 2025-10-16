@@ -317,3 +317,90 @@ if 'Arts Program' in arts_df.columns:
 
 else:
     st.error("The DataFrame 'arts_df' is missing the 'Arts Program' column. Please check your data loading.")
+
+
+# --- Sample Data Creation (Replace with your actual data loading/processing) ---
+# NOTE: You'll need to load 'arts_df' in your actual Streamlit app.
+# This section is just for demonstration purposes so the code runs.
+try:
+    # Column name for easy reference
+    Q_COL = 'Do you feel that the quality of education improved at EU over the last year?'
+    
+    # Dummy Data for Demonstration
+    data = {
+        Q_COL: [
+            'Yes, significantly', 'Yes, a little', 'No change', 'Yes, significantly', 
+            'No, it worsened', 'Yes, a little', 'No change', 'Yes, a little', 
+            'Yes, significantly', 'No change', 'No, it worsened', 'Yes, a little'
+        ]
+    }
+    arts_df = pd.DataFrame(data)
+
+except Exception as e:
+    st.error(f"Error creating dummy data: {e}. Please ensure 'arts_df' is loaded.")
+    arts_df = pd.DataFrame() 
+
+# --- Streamlit Application ---
+
+st.set_page_config(layout="wide", page_title="Education Quality Perception")
+
+st.title("Student Perception on Education Quality Improvement 🎓")
+st.markdown("---")
+
+# Define the question column name
+Q_COL = 'Do you feel that the quality of education improved at EU over the last year?'
+
+# --- Data Processing Logic ---
+
+if Q_COL in arts_df.columns:
+    
+    # 1. Count the occurrences of each response
+    education_quality_counts = arts_df[Q_COL].value_counts().reset_index()
+    education_quality_counts.columns = ['Education Quality Improved', 'Count'] 
+
+    # --- Visualization (Plotly Express) ---
+
+    st.subheader("Results from Arts Faculty Survey")
+
+    # Order the categories logically for the plot
+    order = ['Yes, significantly', 'Yes, a little', 'No change', 'No, it worsened']
+    
+    # Filter and reindex to ensure all expected categories appear, even if count is 0
+    # This also applies the correct visual order
+    education_quality_counts['Education Quality Improved'] = pd.Categorical(
+        education_quality_counts['Education Quality Improved'], 
+        categories=order, 
+        ordered=True
+    )
+    education_quality_counts = education_quality_counts.sort_values('Education Quality Improved')
+
+    # Create an interactive bar chart using Plotly Express
+    fig = px.bar(
+        education_quality_counts,
+        x='Education Quality Improved',
+        y='Count',
+        title='Student Perception on Education Quality Improvement (Arts Faculty)',
+        labels={'Count': 'Number of Students', 'Education Quality Improved': 'Did Education Quality Improve?'},
+        color='Education Quality Improved', # Color by response
+        color_discrete_sequence=px.colors.sequential.Viridis # Use a color scheme
+    )
+    
+    # Customize the layout
+    fig.update_layout(
+        xaxis_title='Did Education Quality Improve?',
+        yaxis_title='Number of Students',
+        xaxis={'categoryorder':'array', 'categoryarray': order}, # Enforce the custom order
+        showlegend=False, 
+        hovermode="x unified"
+    )
+    
+    # Display the interactive plot in Streamlit
+    st.plotly_chart(fig, use_container_width=True)
+
+    # --- Data Table ---
+    st.markdown("---")
+    st.subheader("Response Counts Data")
+    st.dataframe(education_quality_counts)
+
+else:
+    st.error(f"The DataFrame 'arts_df' is missing the column: '{Q_COL}'. Please check your data loading.")
