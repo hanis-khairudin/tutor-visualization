@@ -106,7 +106,7 @@ if all(col in arts_df.columns for col in ['Gender', 'Did you ever attend a Coach
         x='Gender',
         color='Did you ever attend a Coaching center?',
         barmode='group',
-        color_discrete_sequence=px.colors.sequential.Viridis,
+        color_discrete_sequence=px.colors.sequential.Turbo,
         title='Coaching Center Attendance by Gender (Arts Faculty)',
     )
 
