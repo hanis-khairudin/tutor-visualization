@@ -404,3 +404,51 @@ if Q_COL in arts_df.columns:
 
 else:
     st.error(f"The DataFrame 'arts_df' is missing the column: '{Q_COL}'. Please check your data loading.")
+
+
+# --- Sample Data Creation (Replace with your actual data loading/processing) ---
+# NOTE: You'll need to load 'arts_df' in your actual Streamlit app.
+# This section is just for demonstration purposes so the code runs.
+try:
+    # Dummy Data for Demonstration
+    data = {
+        'S.S.C (GPA)': [4.5, 4.8, 3.9, 5.0, 4.2, 4.7, 4.0, 4.9, 3.5, 4.6],
+        'H.S.C (GPA)': [4.2, 4.6, 3.5, 4.9, 4.0, 4.5, 3.8, 4.7, 3.3, 4.4],
+        'Arts Program': ['Music', 'Visual Arts', 'Theatre', 'Visual Arts', 'Dance', 'Music', 'Theatre', 'Visual Arts', 'Dance', 'Film']
+    }
+    arts_df = pd.DataFrame(data)
+
+except Exception as e:
+    st.error(f"Error creating dummy data: {e}. Please ensure 'arts_df' is loaded.")
+    arts_df = pd.DataFrame() 
+
+# --- Streamlit Application ---
+
+st.set_page_config(layout="wide", page_title="GPA Correlation Analysis")
+
+st.title("GPA Correlation: S.S.C vs H.S.C Scores 📈")
+st.markdown("---")
+
+# Define the required column names
+SSC_COL = 'S.S.C (GPA)'
+HSC_COL = 'H.S.C (GPA)'
+
+# --- Data Visualization Logic (Plotly Express) ---
+
+if SSC_COL in arts_df.columns and HSC_COL in arts_df.columns:
+    
+    st.subheader(f"{SSC_COL} vs {HSC_COL} in Arts Faculty")
+
+    # Create an interactive scatter plot using Plotly Express
+    fig = px.scatter(
+        arts_df,
+        x=SSC_COL,
+        y=HSC_COL,
+        title='S.S.C (GPA) vs H.S.C (GPA) in Arts Faculty',
+        labels={SSC_COL: SSC_COL, HSC_COL: HSC_COL},
+        color='Arts Program', # Optional: Add color coding based on another column
+        hover_data=[SSC_COL, HSC_COL] # Show GPA values on hover
+    )
+    
+    # Customize the layout
+    fig.update_layout
